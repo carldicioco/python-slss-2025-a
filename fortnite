@@ -1,0 +1,75 @@
+import random
+import time
+
+def slow_print(text, delay=1):
+    """Print text with a delay for dramatic effect."""
+    print(text)
+    time.sleep(delay)
+
+def fortnite_game():
+    health = 100
+    shield = 0
+    inventory = []
+
+    slow_print("🪂 You dropped from the Battle Bus!")
+    slow_print("You land near Tilted Towers...")
+
+    while health > 0:
+        slow_print("\nWhat do you want to do?")
+        choice = input("1. Search for loot\n2. Move to new area\n3. Check status\n> ").strip()
+
+        if choice == "1":  # Loot
+            loot = random.choice(["Shield Potion", "Medkit", "Shotgun", "AR", "Nothing"])
+            if loot == "Nothing":
+                slow_print("You searched but found nothing.")
+            else:
+                inventory.append(loot)
+                slow_print(f"You found a {loot}!")
+                if loot == "Shield Potion":
+                    shield = min(100, shield + 50)
+                    slow_print(f"Your shield is now {shield}.")
+                elif loot == "Medkit":
+                    health = min(100, health + 50)
+                    slow_print(f"Your health is now {health}.")
+
+        elif choice == "2":  # Move
+            slow_print("You moved to a new area...")
+            encounter = random.choice(["enemy", "storm", "safe"])
+            if encounter == "enemy":
+                slow_print("⚔️ An enemy appears!")
+                if "Shotgun" in inventory or "AR" in inventory:
+                    slow_print("You fought back with your weapon!")
+                    if random.random() > 0.3:
+                        slow_print("You won the fight! 🎉")
+                    else:
+                        damage = random.randint(20, 50)
+                        health -= damage
+                        slow_print(f"You got hit! Lost {damage} health. Health: {health}")
+                else:
+                    damage = random.randint(30, 70)
+                    health -= damage
+                    slow_print(f"You had no weapon! Took {damage} damage. Health: {health}")
+
+            elif encounter == "storm":
+                slow_print("🌩️ The storm is closing in! You take 20 damage.")
+                health -= 20
+            else:
+                slow_print("The area is safe... for now.")
+
+        elif choice == "3":  # Status
+            slow_print(f"Health: {health}, Shield: {shield}, Inventory: {inventory}")
+
+        else:
+            slow_print("Invalid choice, try again.")
+
+        if health <= 0:
+            slow_print("\n💀 You have been eliminated! Game Over.")
+            break
+
+        # Random win condition
+        if random.random() < 0.1:
+            slow_print("\n🏆 You are the last one standing! Victory Royale!!! 🎉")
+            break
+
+if __name__ == "__main__":
+    fortnite_game()
