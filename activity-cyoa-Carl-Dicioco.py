@@ -5,6 +5,8 @@
 import sys
 
 chapel_monster_visited = False
+holywaterhave = False
+chapel_first_visit_no_screwdriver = False
 
 # Variables
 greeting = "Welcome to the game."
@@ -106,7 +108,7 @@ while True:
     # allow stairwell to always be revisited
     if choice4 != "stairwell" and choice4 in visited:
         # Exception: allow chapel re-entry if you didn’t have screwdriver last time
-        if choice4 == "chapel" and chapel_first_visit_no_screwdriver:
+        if choice4 == "chapel" and chapel_first_visit_no_screwdriver == True:
             print("You return to the chapel, hoping you can open the vent this time.")
         else:
             print("You already went there. Pick somewhere else.")
@@ -144,7 +146,10 @@ while True:
             print("For a brief moment, she seems to calm… then lunges at you!")
             health -= 50
             print(f"You are scratched and hurt! Health: {health}")
-            if "bandages" in inventory:
+            if health <= 0:
+                print("You died.")
+                sys.exit()
+            elif "bandages" in inventory:
                 choice6 = input("Do you want to use your bandages? (yes/no) ").lower()
                 if choice6 == "yes":
                     inventory.remove("bandages")
@@ -158,17 +163,15 @@ while True:
             print("She turns around, and you catch a glimpse of her hollow black eyes.")
             print("For a brief moment, she seems to calm… then lunges at the window!")
             print("The girl disappears into thin air.")
-            choice7 = input(
-                "She dropped a screwdriver. Do you take it? (yes/no) "
-            ).lower()
+        choice7 = input("She dropped a screwdriver. Do you take it? (yes/no) ").lower()
 
-            if choice7 == "yes":
-                inventory.append("screwdriver")
-                print(
-                    "You took the screwdriver. This can be used to unlock panels or vents."
-                )
-            else:
-                print("You decide not to take the screwdriver.")
+        if choice7 == "yes":
+            inventory.append("screwdriver")
+            print(
+                "You took the screwdriver. This can be used to unlock panels or vents."
+            )
+        else:
+            print("You decide not to take the screwdriver.")
 
     # Chapel path
     elif choice4 == "chapel":
@@ -197,6 +200,17 @@ while True:
                     print("It slams into you from the shadows!")
                     health -= 50
                 print(f"You are scratched by its claws! Health: {health}")
+                if "bandages" in inventory:
+                    choiceband = input(
+                        "Do you want to use your bandages? (yes/no) "
+                    ).lower()
+                    if choiceband == "yes":
+                        inventory.remove("bandages")
+                        health += 30
+                        print("You use your bandages.")
+                        print(f"Your health is now: {health}.")
+                    else:
+                        print("You decide not to use your bandages.")
             else:
                 print("\nYou have no light source to see it clearly.")
                 print("It slams into you from the shadows!")
@@ -206,39 +220,46 @@ while True:
                     print("You died.")
                     sys.exit()
             print("\nAfter a tense moment, the figure retreats into the shadows.")
-            chapel_monster_visited == True
-            print("At the back of the chapel, you notice a floor vent.")
-        else:
+            chapel_monster_visited = True
+            chapel_first_visit_no_screwdriver = True
+        elif chapel_monster_visited == True:
             print("When you return to the chapel, it feels quieter.")
-            if "screwdriver" in inventory:
-                while True:
-                    choicescrew = input("Do you use your screwdriver? (yes)").lower()
-                    if choicescrew == "yes":
-                        print("\nLuckily, you have a screwdriver.")
-                        print("You remove the screws and lift the vent cover.")
-                        print("Inside, you find a keycard lying in the dust.")
-                        inventory.append("keycard")
-                        print(
-                            "\nYou took the keycard! This can open some type of secured door."
-                        )
-                        chapel_first_visit_no_screwdriver = False
-                        break
-                    else:
-                        print("Invalid answer. Try again.")
-            else:
-                print(
-                    "\nThe vent is screwed shut. You need something to remove the screws."
-                )
-                print("Perhaps there’s a tool elsewhere that can help.")
-                # track that they need to come back later
-                chapel_first_visit_no_screwdriver = True
+
+        print("You find a small vent on the chapel wall.")
+        if "screwdriver" in inventory:
+            while True:
+                choicescrew = input("Do you use your screwdriver? (yes)").lower()
+                if choicescrew == "yes":
+                    print("\nLuckily, you have a screwdriver.")
+                    print("You remove the screws and lift the vent cover.")
+                    inventory.append("keycard")
+                    print(
+                        "\nYou took the keycard! This can open some type of secured door."
+                    )
+                    chapel_first_visit_no_screwdriver = False
+                    break
+                else:
+                    print("Invalid answer. Try again.")
+        else:
+            print(
+                "\nThe vent is screwed shut. You need something to remove the screws."
+            )
+            print("Perhaps there’s a tool elsewhere that can help.")
+            # track that they need to come back later
+            chapel_first_visit_no_screwdriver = True
 
         print("\nThere seems to be a room near the altar.")
         choice12 = input("Do you enter? (yes/no)").lower()
         if choice12 == "yes":
-            print("\nYou step inside the room.")
-            print("While observing the room, you stumble upon a bottle of Holy Water!")
-            inventory.append("holywater")
+            if holywaterhave == False:
+                print("\nYou step inside the room.")
+                print(
+                    "While observing the room, you stumble upon a bottle of Holy Water!"
+                )
+                inventory.append("holywater")
+                holywaterhave = True
+            elif holywaterhave == True:
+                print("You already took the Holy Water.")
         else:
             print("You choose not to enter.")
         print("You leave the chapel.")
@@ -320,7 +341,7 @@ while True:
                         "You turn and see a tall figure, hunched and thin, with long hair hiding its face."
                     )
                     print(
-                        "Its movements are slow but deliberate, and it stumbles slightly as it approaches, like a wounded person."
+                        "Its movements are slow but deliberate, and it stumbles slightly as it approaches."
                     )
                     if "holywater" in inventory:
                         print("\nYou grab out the bottle of Holy Water!")
@@ -367,7 +388,7 @@ while True:
                                     "\nYou slide the exit key into the padlock and turn it. The lock clicks open."
                                 )
                                 print(
-                                    "You wrench the boarded door aside and push it wide, then run."
+                                    "You wrench the boarded door aside and run instinctively."
                                 )
                                 print(
                                     "You burst into an open field, wind tearing at your clothes as you race away into the night."
@@ -379,6 +400,7 @@ while True:
                                 print(
                                     "Before you can react, he lunges and drives a knife into you."
                                 )
+                                print("BAD ENDING #1")
                                 sys.exit()
                         else:
                             print("You decide not to use your gun.")
@@ -402,7 +424,7 @@ while True:
                             "As everything around you becomes darker, you hear his distorted voice saying:"
                         )
                         print("'You will end up just like them.'")
-                        print("\nBAD ENDING")
+                        print("\nBAD ENDING #2")
                         sys.exit()
                 else:
                     print("You leave the staircase.")
