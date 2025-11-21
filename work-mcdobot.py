@@ -15,4 +15,3 @@ if answer == "yes":
 elif answer == "no":
     print("Okay, no fries.")
 else:
-    print(f"I do not understand '{answer}'.")
