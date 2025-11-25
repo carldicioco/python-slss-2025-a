@@ -1,0 +1,50 @@
+# Data Analysis
+# Author: Carl Dicioco
+#
+# Analyse the NYC Central Park weather data from 1869–2022
+
+
+def main():
+    filename = "data/nyccentralpark.csv"
+
+    num_data_points = 0
+    total_rainfall = 0.0
+    total_tmin = 0.0
+
+    with open(filename, "r") as file:
+        next(file)
+
+        for line in file:
+            parts = line.strip().split(",")
+
+            prcp_str = parts[1]
+            tmin_str = parts[4]
+
+            num_data_points += 1
+
+            if prcp_str == "":
+                rainfall = 0.0
+            else:
+                rainfall = float(prcp_str)
+            total_rainfall += rainfall
+
+            if tmin_str != "":
+                tmin_f = float(tmin_str)
+                total_tmin += tmin_f
+
+    average_rainfall = total_rainfall / num_data_points
+
+    average_tmin_f = total_tmin / num_data_points
+    average_tmin_c = (
+        (average_tmin_f - 32) * 5 / 9
+    )  # because the equation for converting is subtracting 32 and multiplying 5/9
+
+    print(f"Number of data points: {num_data_points}")
+    print(f"average rainfall (inches): {average_rainfall:.2f}")
+
+    print(f"average minimum temperature (F): {average_tmin_f:.2f}")
+    print(f"average minimum temperature (C): {average_tmin_c:.2f}")
+
+
+if __name__ == "__main__":
+    main()
