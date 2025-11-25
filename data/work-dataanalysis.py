@@ -34,16 +34,16 @@ def main():
 
     average_rainfall = total_rainfall / num_data_points
 
-    average_tmin_f = total_tmin / num_data_points
-    average_tmin_c = (
-        (average_tmin_f - 32) * 5 / 9
+    avg_tmin_fahr = total_tmin / num_data_points
+    avg_tmin_cels = (
+        (avg_tmin_fahr - 32) * 5 / 9
     )  # because the equation for converting is subtracting 32 and multiplying 5/9
 
     print(f"Number of data points: {num_data_points}")
     print(f"average rainfall (inches): {average_rainfall:.2f}")
 
-    print(f"average minimum temperature (F): {average_tmin_f:.2f}")
-    print(f"average minimum temperature (C): {average_tmin_c:.2f}")
+    print(f"average minimum temperature (F): {avg_tmin_fahr:.2f}")
+    print(f"average minimum temperature (C): {avg_tmin_cels:.2f}")
 
 
 if __name__ == "__main__":
