@@ -2,7 +2,7 @@
 # Author: Ubial
 # 4 December
 
-import csv
+import helper_spotify
 
 # Sorting Algorithms
 # The code below uses linear search to find songs from a particular artist
@@ -25,22 +25,71 @@ def selection_sort(l: list[int], ascending=True) -> list[int]:
 
     # start at the beginning of list
     for i in range(num_items):
-        lowest_num = l[i]
-        lowest_index = i
+        candidate_num = l[i]
+        candidate_index = i
 
         # check the rest of the list
         for j in range(i + 1, num_items):
-            if l[j] < lowest_num:
-                lowest_num = l[j]
-                lowest_index = j
+            if ascending:
+                if l[j] < candidate_num:
+                    candidate_num = l[j]
+                    candidate_index = j
+            else:
+                if l[j] > candidate_num:
+                    candidate_num = l[j]
+                    candidate_index = j
 
         # swap the current index with the lowest
-        l[i], l[lowest_index] = l[lowest_index], l[i]
+        l[i], l[candidate_index] = l[candidate_index], l[i]
 
     return l
 
 
-if __name__ == "__main__":
-    sorted_list = selection_sort([1, 43, 55, -11, 100, 34], False)
+def sort_songs(songs: list[list[str]], col: int, ascending=True) -> list[list[str]]:
+    """Sort a list of spotify songs in place
 
-    print(sorted_list)
+    Params:
+        songs - list of songs
+        col - column to sort
+        ascending - will sort ascending by default
+
+    Returns: sorted list"""
+    # Use Selection Sort to sort songs
+    num_songs = len(songs)
+
+    # Starting at the beginning of the list
+    for i in range(num_songs):
+        # Set this value to the candidate's value
+        candidate_val = helper_spotify.string_to_num(songs[i][col])
+        candidate_idx = i
+
+        for j in range(i + 1, num_songs):
+            this_songs_val = helper_spotify.string_to_num(songs[j][col])
+            if ascending:
+                if this_songs_val < candidate_val:
+                    candidate_val = this_songs_val
+                    candidate_idx = j
+            else:
+                # If this val is higher than candidate
+                if this_songs_val > candidate_val:
+                    candidate_val = this_songs_val
+                    candidate_idx = j
+
+        # Swap!
+        songs[i], songs[candidate_idx] = songs[candidate_idx], songs[i]
+
+    return songs
+
+
+if __name__ == "__main__":
+    # Get all songs from Ed Sheeran
+    eds_songs = helper_spotify.songs_by_artist("data/spotify2024.csv", "Ed Sheeran")
+    eds_sorted_songs = sort_songs(eds_songs, 16, ascending=False)
+
+    # Header on the results
+    print("Ed Sheeran's Songs")
+    print("____________________")
+    print("Name\tTiktok Views")
+    # For every song, print out Track Name, YT Views
+    for song in eds_sorted_songs:
+        print(song[0], "\t", song[16])
