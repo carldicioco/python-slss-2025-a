@@ -1,5 +1,5 @@
 # Intro to Sort
-# Author: Ubial
+# Author: Carl Dicioco
 # 4 December
 
 import helper_spotify

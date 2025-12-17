@@ -1,5 +1,5 @@
 # Big Data
-# Author: cARL dICIOCO
+# Author: Carl Dicioco
 # 17 November 2025
 
 # Open files using Python

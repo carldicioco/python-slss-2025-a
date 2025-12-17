@@ -1,3 +1,8 @@
+# Loops
+# Author: Carl Dicioco
+# 20 October
+
+
 import turtle
 
 window = turtle.Screen()  # Set up the window and its attributes
