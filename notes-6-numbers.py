@@ -9,6 +9,8 @@
 # bubble tea place around us
 
 # Version 1
+
+
 def vote_listed_choices():
     """Display all choices
     5 users vote for their choice

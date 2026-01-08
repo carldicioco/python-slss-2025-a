@@ -1,5 +1,5 @@
 # Classes and Objects
-# Author: Carl Dicioco
+# Author: Ubial
 # 11 December 2025
 
 import random
@@ -8,11 +8,10 @@ import random
 class Pokemon:
     def __init__(self):
         # Initialize the properties of Pokemon
-        self.name = "Squirtle"
-        self.species = "Squirtle"
-        self.type = "Water"
+        self.name = ""
+        self.species = ""
+        self.type = "normal"
         self.age = 0
-        self.hassunglasses = True
         self.level = 1
         print("A pokemon is born!")
         # One out of 4096 should be shiny
@@ -21,23 +20,27 @@ class Pokemon:
             self.shiny = False
         else:
             self.shiny = True
-            print(f"✨{self.name} is shiny!✨")
+            print("✨{self.name} is shiny!✨")
 
     def talk(self):
-        """Hear what the pokemon has to say."""
+        """Hear what the pokemon has to say.
+        The pokemon says its species name."""
         print(f'{self.name} says, "{self.species}".')
 
     def stats(self):
         """Display the stats of the Pokemon"""
         print(f"---{self.species}----------")
-        print(f" Name: {self.name}")
-        print(f" Type: {self.type}")
-        print(f" Age: {self.age}")
-        print(f" Level: {self.level}")
+        print(f"   Name: {self.name}")
+        print(f"   Type: {self.type}")
+        print(f"   Age:  {self.age}")
+        print(f"   Level: {self.level}")
         print("---------------------------")
 
     def find_something(self, how_many_things=1) -> list[str]:
-        """Send pokemon to find something"""
+        """Send pokemon to find something
+
+        Returns:
+            a str representing what it found"""
         things = [
             "pinap berry",
             "razz berry",
@@ -47,49 +50,62 @@ class Pokemon:
             "moon stone",
         ]
         found_things = []
+
         for _ in range(how_many_things):
             found_things.append(random.choice(things))
+
         return found_things
 
 
 class Squirtle(Pokemon):
     def __init__(self):
+        # Call the superclass constructor explicitly
         super().__init__()
         self.name = "Squirtle"
         self.species = "Squirtle"
-        self.type = "Water"
-        self.shell_health = 100
+        self.type = "water"
+        self.has_sunglasses = True
 
     def water_gun(self):
         """Use the water gun attack."""
-        print(f"{self.name} used Water Gun!")
+        print(f"{self.name} used water gun.")
+        # TODO: check to see if it's effective
 
-    def withdraw(self):
-        """Squirtle hides in its shell to reduce damage."""
-        print(f"{self.name} withdrew into its shell!")
-        self.shell_health += 10
+
+class New(Pokemon):
+    def _init__(self):
+        # Constructor
+        super().__init__()
+        self.name = "Mew"
+        self.type = "psychic"
+        self.species = "Mew"
+        self.level = 1
+        self.age = 0
 
 
 if __name__ == "__main__":
+    # Create a pokemon object
     pokemon_one = Pokemon()
+    # View its properties
     print("Pokemon Name:", pokemon_one.name)
-
+    # Change some properties
     pokemon_one.name = "Gary"
     print("Pokemon Name:", pokemon_one.name)
-
+    # Create another pokemon object
     pokemon_two = Pokemon()
     print("Pokemon two's name:", pokemon_two.name)
-
+    # Compare the two pokemon
     if pokemon_one == pokemon_two:
         print("These are the same pokemon?")
     else:
         print("They're individual, distinct pokemon")
-
+    # Check if both objects are pokemon
     if type(pokemon_one) is Pokemon:
         print(f"{pokemon_one.name} is a Pokemon.")
     if type(pokemon_two) is Pokemon:
         print(f"{pokemon_two.name} is a Pokemon.")
 
+    # Have Gary talk
     pokemon_one.talk()
     pokemon_two.talk()
     pokemon_one.stats()
@@ -98,4 +114,3 @@ if __name__ == "__main__":
     squirtle_one = Squirtle()
     squirtle_one.talk()
     squirtle_one.water_gun()
-    squirtle_one.withdraw()
