@@ -2,10 +2,8 @@
 # Author: Ubial
 # 7 January 2026
 
-import random
-
 import pygame
-
+import random
 
 class Block(pygame.sprite.Sprite):
     def __init__(self, colour: pygame.Color, width: int, height: int):
@@ -24,19 +22,22 @@ class Block(pygame.sprite.Sprite):
         self.rect.centerx = 100
         self.rect.centery = 100
 
-
 class Mario(pygame.sprite.Sprite):
     def __init__(self):
         """The player"""
         super().__init__()
 
-        self.image = pygame.image.load("assets/mario-snes.png")
+        self.image =  pygame.image.load("assets/mario-snes.png")
         self.rect = self.image.get_rect()
 
     def update(self):
         """Update Mario's location based on the mouse pos"""
         self.rect.center = pygame.mouse.get_pos()
 
+class Enemy(pygame.sprite.Sprite):
+    # TODO: Implement an enemy sprite
+    # TODO: Constructor
+    # TODO: Update Method
 
 def game():
     pygame.init()
@@ -44,11 +45,11 @@ def game():
     # COLOURS - (R, G, B)
     # CONSTANTS ALL HAVE CAPS FOR THEIR NAMES
     WHITE = (255, 255, 255)
-    BLACK = (0, 0, 0)
-    RED = (255, 0, 0)
-    GREEN = (0, 255, 0)
-    BLUE = (0, 0, 255)
-    GREY = (128, 128, 128)
+    BLACK = (  0,   0,   0)
+    RED   = (255,   0,   0)
+    GREEN = (  0, 255,   0)
+    BLUE  = (  0,   0, 255)
+    GREY  = (128, 128, 128)
 
     # CONSTANTS
     WIDTH = 800
@@ -65,6 +66,7 @@ def game():
 
     # Create a Sprite Group
     all_sprites_group = pygame.sprite.Group()
+    block_sprites_group = pygame.sprite.Group()
 
     # Create 100 blocks
     # Randomly place them throughout the screen
@@ -75,6 +77,7 @@ def game():
         block.rect.centery = random.randrange(0, HEIGHT)
 
         all_sprites_group.add(block)
+        block_sprites_group.add(block)
 
     # Create a player
     player = Mario()
@@ -93,10 +96,15 @@ def game():
         # ------ GAME LOGIC
         all_sprites_group.update()
 
-        # TODO:
-        # Create a group of JUST BLOCKS
-        all_sprites_group
-        pygame.sprite.spritecollide(player, all_sprites_group)
+        # TODO: Check if Mario collides with a block
+        blocks_collided = pygame.sprite.spritecollide(player, block_sprites_group, True)
+        # if the blocks_collided list has something in it
+        # print Mario has collided with a block!
+        if blocks_collided:
+            print("----")
+            print("Mario has collided with a block!")
+            print(blocks_collided)
+
         # ------ DRAWING TO SCREEN
         screen.fill(WHITE)
         all_sprites_group.draw(screen)
@@ -105,10 +113,9 @@ def game():
         pygame.display.flip()
 
         # ------ CLOCK TICK
-        clock.tick(60)  # 60 fps
+        clock.tick(60) # 60 fps
 
     pygame.quit()
-
 
 if __name__ == "__main__":
     game()
